@@ -1,5 +1,5 @@
 name: "yomu_bioinfo_basic"
-output_dir: _docs
+output_dir: docs
 navbar:
   title: "「バイオインフォマティクスデータスキル」輪読会"
   left:
