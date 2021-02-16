@@ -419,7 +419,7 @@ pivot_wider(
 </ul>
 <pre class="r"><code>read_csv(&quot;Dataset_S1.txt&quot;)</code></pre>
 <pre><code>## 
-## ── Column specification ────────────────────────────────
+## ── Column specification ────────────────────────────────────────────────────────────────────────────────────────────────
 ## cols(
 ##   start = col_double(),
 ##   end = col_double(),
@@ -439,24 +439,19 @@ pivot_wider(
 ##   SNPs = col_double()
 ## )</code></pre>
 <pre><code>## # A tibble: 59,140 x 16
-##    start   end `total SNPs` `total Bases` depth
-##    &lt;dbl&gt; &lt;dbl&gt;        &lt;dbl&gt;         &lt;dbl&gt; &lt;dbl&gt;
-##  1 55001 56000            0          1894  3.41
-##  2 56001 57000            5          6683  6.68
-##  3 57001 58000            1          9063  9.06
-##  4 58001 59000            7         10256 10.3 
-##  5 59001 60000            4          8057  8.06
-##  6 60001 61000            6          7051  7.05
-##  7 61001 62000            7          6950  6.95
-##  8 62001 63000            1          8834  8.83
-##  9 63001 64000            1          9629  9.63
-## 10 64001 65000            3          7999  8   
-## # … with 59,130 more rows, and 11 more variables:
-## #   `unique SNPs` &lt;dbl&gt;, dhSNPs &lt;dbl&gt;, `reference
-## #   Bases` &lt;dbl&gt;, Theta &lt;dbl&gt;, Pi &lt;dbl&gt;,
-## #   Heterozygosity &lt;dbl&gt;, `%GC` &lt;dbl&gt;,
-## #   Recombination &lt;dbl&gt;, Divergence &lt;dbl&gt;,
-## #   Constraint &lt;dbl&gt;, SNPs &lt;dbl&gt;</code></pre>
+##    start   end `total SNPs` `total Bases` depth `unique SNPs` dhSNPs `reference Base… Theta    Pi Heterozygosity `%GC`
+##    &lt;dbl&gt; &lt;dbl&gt;        &lt;dbl&gt;         &lt;dbl&gt; &lt;dbl&gt;         &lt;dbl&gt;  &lt;dbl&gt;            &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;          &lt;dbl&gt; &lt;dbl&gt;
+##  1 55001 56000            0          1894  3.41             0      0              556  0     0              0     54.8
+##  2 56001 57000            5          6683  6.68             2      2             1000  8.01 10.4            7.48  42.4
+##  3 57001 58000            1          9063  9.06             1      0             1000  3.51  1.99           1.10  37.2
+##  4 58001 59000            7         10256 10.3              3      2             1000  9.93  9.56           6.58  38.0
+##  5 59001 60000            4          8057  8.06             4      0             1000 12.9   8.51           4.96  41.3
+##  6 60001 61000            6          7051  7.05             2      1             1000  7.82  9.12           8.86  36.1
+##  7 61001 62000            7          6950  6.95             2      1             1000  8.60  8.06          10.4   36.5
+##  8 62001 63000            1          8834  8.83             1      0             1000  4.01  2.06           1.13  35.5
+##  9 63001 64000            1          9629  9.63             1      0             1000  3.37  1.88           1.04  43.5
+## 10 64001 65000            3          7999  8                1      1             1000  4.16  5.41           3.75  30.6
+## # … with 59,130 more rows, and 4 more variables: Recombination &lt;dbl&gt;, Divergence &lt;dbl&gt;, Constraint &lt;dbl&gt;, SNPs &lt;dbl&gt;</code></pre>
 </div>
 <div id="lapplyとsapply関数を使ってリストに関数を適用するp231" class="section level2">
 <h2>lapply()とsapply()関数を使って、リストに関数を適用する（p231）</h2>
@@ -474,30 +469,27 @@ pivot_wider(
 ll &lt;- list(a=rnorm(6, mean=1), b=rnorm(6, mean=4), c=rnorm(6, mean=6))
 ll</code></pre>
 <pre><code>## $a
-## [1]  0.8833508  1.0096021 -0.1440581  2.0147508
-## [5] -1.0356442  1.5781123
+## [1]  1.3801666 -0.3903840  1.2635464  1.2874418  0.1008822  0.8695946
 ## 
 ## $b
-## [1] 3.868375 4.064871 4.495219 2.611229 4.975130
-## [6] 5.217017
+## [1] 7.280391 3.356034 1.976401 4.443138 3.503809 5.362678
 ## 
 ## $c
-## [1] 5.296067 6.067610 5.809529 7.077418 6.239048
-## [6] 5.478907</code></pre>
+## [1] 6.250289 5.366076 6.297168 7.095250 6.729566 5.859650</code></pre>
 <pre class="r"><code># map_dbl（）が数字を返す
 map_dbl(ll, mean)</code></pre>
 <pre><code>##         a         b         c 
-## 0.7176856 4.2053069 5.9947632</code></pre>
+## 0.7518746 4.3204084 6.2663330</code></pre>
 <pre class="r"><code># lapply()がリストを返す
 lapply(ll, mean)</code></pre>
 <pre><code>## $a
-## [1] 0.7176856
+## [1] 0.7518746
 ## 
 ## $b
-## [1] 4.205307
+## [1] 4.320408
 ## 
 ## $c
-## [1] 5.994763</code></pre>
+## [1] 6.266333</code></pre>
 <pre class="r"><code># p254: mapply() vs map2()
 ind_1 &lt;- list(loci_1=c(&quot;T&quot;, &quot;T&quot;), loci_2=c(&quot;T&quot;, &quot;G&quot;), loci_3=c(&quot;C&quot;, &quot;G&quot;))
 ind_2 &lt;- list(loci_1=c(&quot;A&quot;, &quot;A&quot;), loci_2=c(&quot;G&quot;, &quot;G&quot;), loci_3=c(&quot;C&quot;, &quot;G&quot;))
@@ -518,7 +510,7 @@ mapply(function(a, b) length(intersect(a,b)), ind_1, ind_2)</code></pre>
 <pre class="r"><code># データを読み込む
 mtfs &lt;- read_delim(&quot;motif_recombrates.txt&quot;, delim = &quot;\t&quot;)</code></pre>
 <pre><code>## 
-## ── Column specification ────────────────────────────────
+## ── Column specification ────────────────────────────────────────────────────────────────────────────────────────────────
 ## cols(
 ##   chr = col_character(),
 ##   motif_start = col_double(),
@@ -532,24 +524,22 @@ mtfs &lt;- read_delim(&quot;motif_recombrates.txt&quot;, delim = &quot;\t&quot;)
 ## )</code></pre>
 <pre class="r"><code>mtfs</code></pre>
 <pre><code>## # A tibble: 20,050 x 9
-##    chr   motif_start motif_end   dist recomb_start
-##    &lt;chr&gt;       &lt;dbl&gt;     &lt;dbl&gt;  &lt;dbl&gt;        &lt;dbl&gt;
-##  1 chrX     35471312  35471325 39323      35430651
-##  2 chrX     35471312  35471325 36977      35433339
-##  3 chrX     35471312  35471325 34798.     35435343
-##  4 chrX     35471312  35471325 31850.     35437698
-##  5 chrX     35471312  35471325 27463      35441239
-##  6 chrX     35471312  35471325 24834      35446471
-##  7 chrX     35471312  35471325 21783      35446497
-##  8 chrX     35471312  35471325 18516.     35452573
-##  9 chrX     35471312  35471325 17440      35453030
-## 10 chrX     35471312  35471325 15814      35454726
-## # … with 20,040 more rows, and 4 more variables:
-## #   recomb_end &lt;dbl&gt;, recom &lt;dbl&gt;, motif &lt;chr&gt;,
-## #   pos &lt;chr&gt;</code></pre>
+##    chr   motif_start motif_end   dist recomb_start recomb_end  recom motif         pos          
+##    &lt;chr&gt;       &lt;dbl&gt;     &lt;dbl&gt;  &lt;dbl&gt;        &lt;dbl&gt;      &lt;dbl&gt;  &lt;dbl&gt; &lt;chr&gt;         &lt;chr&gt;        
+##  1 chrX     35471312  35471325 39323      35430651   35433340 0.0015 CCTCCCTGACCAC chrX-35471312
+##  2 chrX     35471312  35471325 36977      35433339   35435344 0.0015 CCTCCCTGACCAC chrX-35471312
+##  3 chrX     35471312  35471325 34798.     35435343   35437699 0.0015 CCTCCCTGACCAC chrX-35471312
+##  4 chrX     35471312  35471325 31850.     35437698   35441240 0.0015 CCTCCCTGACCAC chrX-35471312
+##  5 chrX     35471312  35471325 27463      35441239   35446472 0.0015 CCTCCCTGACCAC chrX-35471312
+##  6 chrX     35471312  35471325 24834      35446471   35446498 0.0016 CCTCCCTGACCAC chrX-35471312
+##  7 chrX     35471312  35471325 21783      35446497   35452574 0.0017 CCTCCCTGACCAC chrX-35471312
+##  8 chrX     35471312  35471325 18516.     35452573   35453031 1.51   CCTCCCTGACCAC chrX-35471312
+##  9 chrX     35471312  35471325 17440      35453030   35454727 0.0076 CCTCCCTGACCAC chrX-35471312
+## 10 chrX     35471312  35471325 15814      35454726   35456283 0.0076 CCTCCCTGACCAC chrX-35471312
+## # … with 20,040 more rows</code></pre>
 <pre class="r"><code>rpts &lt;- read_delim(&quot;motif_repeats.txt&quot;, delim = &quot;\t&quot;)</code></pre>
 <pre><code>## 
-## ── Column specification ────────────────────────────────
+## ── Column specification ────────────────────────────────────────────────────────────────────────────────────────────────
 ## cols(
 ##   chr = col_character(),
 ##   start = col_double(),
@@ -579,21 +569,19 @@ left_join(
   by = c(&quot;chr&quot;, &quot;motif_start&quot;)
 )</code></pre>
 <pre><code>## # A tibble: 20,050 x 10
-##    chr   motif_start motif_end   dist recomb_start
-##    &lt;chr&gt;       &lt;dbl&gt;     &lt;dbl&gt;  &lt;dbl&gt;        &lt;dbl&gt;
-##  1 chrX     35471312  35471325 39323      35430651
-##  2 chrX     35471312  35471325 36977      35433339
-##  3 chrX     35471312  35471325 34798.     35435343
-##  4 chrX     35471312  35471325 31850.     35437698
-##  5 chrX     35471312  35471325 27463      35441239
-##  6 chrX     35471312  35471325 24834      35446471
-##  7 chrX     35471312  35471325 21783      35446497
-##  8 chrX     35471312  35471325 18516.     35452573
-##  9 chrX     35471312  35471325 17440      35453030
-## 10 chrX     35471312  35471325 15814      35454726
-## # … with 20,040 more rows, and 5 more variables:
-## #   recomb_end &lt;dbl&gt;, recom &lt;dbl&gt;, motif &lt;chr&gt;,
-## #   pos &lt;chr&gt;, name &lt;chr&gt;</code></pre>
+##    chr   motif_start motif_end   dist recomb_start recomb_end  recom motif         pos           name 
+##    &lt;chr&gt;       &lt;dbl&gt;     &lt;dbl&gt;  &lt;dbl&gt;        &lt;dbl&gt;      &lt;dbl&gt;  &lt;dbl&gt; &lt;chr&gt;         &lt;chr&gt;         &lt;chr&gt;
+##  1 chrX     35471312  35471325 39323      35430651   35433340 0.0015 CCTCCCTGACCAC chrX-35471312 &lt;NA&gt; 
+##  2 chrX     35471312  35471325 36977      35433339   35435344 0.0015 CCTCCCTGACCAC chrX-35471312 &lt;NA&gt; 
+##  3 chrX     35471312  35471325 34798.     35435343   35437699 0.0015 CCTCCCTGACCAC chrX-35471312 &lt;NA&gt; 
+##  4 chrX     35471312  35471325 31850.     35437698   35441240 0.0015 CCTCCCTGACCAC chrX-35471312 &lt;NA&gt; 
+##  5 chrX     35471312  35471325 27463      35441239   35446472 0.0015 CCTCCCTGACCAC chrX-35471312 &lt;NA&gt; 
+##  6 chrX     35471312  35471325 24834      35446471   35446498 0.0016 CCTCCCTGACCAC chrX-35471312 &lt;NA&gt; 
+##  7 chrX     35471312  35471325 21783      35446497   35452574 0.0017 CCTCCCTGACCAC chrX-35471312 &lt;NA&gt; 
+##  8 chrX     35471312  35471325 18516.     35452573   35453031 1.51   CCTCCCTGACCAC chrX-35471312 &lt;NA&gt; 
+##  9 chrX     35471312  35471325 17440      35453030   35454727 0.0076 CCTCCCTGACCAC chrX-35471312 &lt;NA&gt; 
+## 10 chrX     35471312  35471325 15814      35454726   35456283 0.0076 CCTCCCTGACCAC chrX-35471312 &lt;NA&gt; 
+## # … with 20,040 more rows</code></pre>
 <p>他にも色々な<code>*_join()</code> があります。例えば、<code>inner_join()</code>は両方のデータに条件が一致した行だけを残します：</p>
 <pre class="r"><code>inner_join(
   mtfs,
@@ -601,21 +589,19 @@ left_join(
   by = c(&quot;chr&quot;, &quot;motif_start&quot;)
 )</code></pre>
 <pre><code>## # A tibble: 9,218 x 10
-##    chr   motif_start motif_end    dist recomb_start
-##    &lt;chr&gt;       &lt;dbl&gt;     &lt;dbl&gt;   &lt;dbl&gt;        &lt;dbl&gt;
-##  1 chrX     63005830  63005843  37772      62965644
-##  2 chrX     63005830  63005843  34673      62970484
-##  3 chrX     63005830  63005843  30084.     62971842
-##  4 chrX     63005830  63005843  21750.     62979661
-##  5 chrX     63005830  63005843  10682.     62988510
-##  6 chrX     63005830  63005843   2210.     63001799
-##  7 chrX     63005830  63005843   -384.     63005454
-##  8 chrX     63005830  63005843  -3530.     63006987
-##  9 chrX     63005830  63005843  -6024.     63011744
-## 10 chrX     63005830  63005843 -12691      63011975
-## # … with 9,208 more rows, and 5 more variables:
-## #   recomb_end &lt;dbl&gt;, recom &lt;dbl&gt;, motif &lt;chr&gt;,
-## #   pos &lt;chr&gt;, name &lt;chr&gt;</code></pre>
+##    chr   motif_start motif_end    dist recomb_start recomb_end  recom motif         pos           name 
+##    &lt;chr&gt;       &lt;dbl&gt;     &lt;dbl&gt;   &lt;dbl&gt;        &lt;dbl&gt;      &lt;dbl&gt;  &lt;dbl&gt; &lt;chr&gt;         &lt;chr&gt;         &lt;chr&gt;
+##  1 chrX     63005830  63005843  37772      62965644   62970485 1.47   CCTCCCTGACCAC chrX-63005830 L2   
+##  2 chrX     63005830  63005843  34673      62970484   62971843 0.0448 CCTCCCTGACCAC chrX-63005830 L2   
+##  3 chrX     63005830  63005843  30084.     62971842   62979662 0.0448 CCTCCCTGACCAC chrX-63005830 L2   
+##  4 chrX     63005830  63005843  21750.     62979661   62988511 0.0494 CCTCCCTGACCAC chrX-63005830 L2   
+##  5 chrX     63005830  63005843  10682.     62988510   63001800 0.045  CCTCCCTGACCAC chrX-63005830 L2   
+##  6 chrX     63005830  63005843   2210.     63001799   63005455 0.0388 CCTCCCTGACCAC chrX-63005830 L2   
+##  7 chrX     63005830  63005843   -384.     63005454   63006988 0.0377 CCTCCCTGACCAC chrX-63005830 L2   
+##  8 chrX     63005830  63005843  -3530.     63006987   63011745 0.0377 CCTCCCTGACCAC chrX-63005830 L2   
+##  9 chrX     63005830  63005843  -6024.     63011744   63011976 0.0368 CCTCCCTGACCAC chrX-63005830 L2   
+## 10 chrX     63005830  63005843 -12691      63011975   63025080 0.0362 CCTCCCTGACCAC chrX-63005830 L2   
+## # … with 9,208 more rows</code></pre>
 </div>
 
 
