@@ -33,18 +33,23 @@ library(tidyverse)
 
 ## Rのパイプ
 
-「バイオインフォマティクスデータスキル」に書いていませんが、Rにもパイプ（`%>%`）があります！ tidyverse群のmagrittrパケージに入っています。
+「バイオインフォマティクスデータスキル」に書いていませんが、Rにもパイプ（`%>%`）があります！ tidyverse群のmagrittrパケージに入っています。リナックスのパイプ（`|`）と相当します。
 
 例えば、データから二つのコラムを選んで、名前を変えて、列の「a」が10以上の行だけに絞ります：
 
-**tidyverseバージョン**（dplyr, p259 + パイプ）
-```{r pipe1}
-# 仮のデータを作る
+まずは仮のデータを作ります。
+```{r make-data}
 data <- data.frame(
   var1 = c(9, 11),
-  var2 = c(100, 200)
+  var2 = c(100, 200),
+  var3 = c(300, 400)
 )
 
+data
+```
+
+**tidyverseバージョン**（dplyr, p259 + パイプ）
+```{r pipe1}
 data %>%
   select(a = var1, b = var2) %>%
   filter(a > 10)
@@ -52,10 +57,14 @@ data %>%
 
 **ベースRバージョン**
 ```{r pipe2}
-data2 <- data[,c("var1", "var2")]
-colnames(data2) <- c("a", "b")
-data2[data2$a > 10,]
+data <- data[,c("var1", "var2")]
+colnames(data) <- c("a", "b")
+data[data$a > 10,]
 ```
+
+どちらが分かりやすいと思いますか？
+
+ちなみに、二つのバージョンでは、列名（`1`と`2`）が違いますよね。`data.frame`には列名がどう変わるか、なかなか予想が付かない時があるから、**dataframeよりも列名を使わないtidyverseのtibble**がおすすめです（下の`read_csv()`のところを参照）。
 
 ## ファクター（p205）
 
@@ -160,7 +169,7 @@ mapply(function(a, b) length(intersect(a,b)), ind_1, ind_2)
 
 ## データのマージと結合（p234）
 
-本に出ているような`match()`の使い方はとても*おすすめできません*。分かりづらくて、間違いやすいです。
+本に出ているような`match()`の使い方はとても**おすすめできません**。分かりづらくて、間違いやすいです。
 
 ここはdplyrの`left_join()` がおすすめです。
 
