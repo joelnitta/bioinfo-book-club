@@ -1,0 +1,667 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+
+
+
+<title>チャプター８：R言語入門</title>
+
+<script src="site_libs/header-attrs-2.6/header-attrs.js"></script>
+<script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<link href="site_libs/bootstrap-3.3.5/css/bootstrap.min.css" rel="stylesheet" />
+<script src="site_libs/bootstrap-3.3.5/js/bootstrap.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/html5shiv.min.js"></script>
+<script src="site_libs/bootstrap-3.3.5/shim/respond.min.js"></script>
+<script src="site_libs/navigation-1.1/tabsets.js"></script>
+<link href="site_libs/highlightjs-9.12.0/default.css" rel="stylesheet" />
+<script src="site_libs/highlightjs-9.12.0/highlight.js"></script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+<style type="text/css">code{white-space: pre;}</style>
+<style type="text/css">
+  pre:not([class]) {
+    background-color: white;
+  }
+</style>
+<script type="text/javascript">
+if (window.hljs) {
+  hljs.configure({languages: []});
+  hljs.initHighlightingOnLoad();
+  if (document.readyState && document.readyState === "complete") {
+    window.setTimeout(function() { hljs.initHighlighting(); }, 0);
+  }
+}
+</script>
+
+
+
+<style type="text/css">
+h1 {
+  font-size: 34px;
+}
+h1.title {
+  font-size: 38px;
+}
+h2 {
+  font-size: 30px;
+}
+h3 {
+  font-size: 24px;
+}
+h4 {
+  font-size: 18px;
+}
+h5 {
+  font-size: 16px;
+}
+h6 {
+  font-size: 12px;
+}
+.table th:not([align]) {
+  text-align: left;
+}
+</style>
+
+
+
+
+
+<style type = "text/css">
+.main-container {
+  max-width: 940px;
+  margin-left: auto;
+  margin-right: auto;
+}
+code {
+  color: inherit;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+img {
+  max-width:100%;
+}
+.tabbed-pane {
+  padding-top: 12px;
+}
+.html-widget {
+  margin-bottom: 20px;
+}
+button.code-folding-btn:focus {
+  outline: none;
+}
+summary {
+  display: list-item;
+}
+</style>
+
+
+<style type="text/css">
+/* padding for bootstrap navbar */
+body {
+  padding-top: 51px;
+  padding-bottom: 40px;
+}
+/* offset scroll position for anchor links (for fixed navbar)  */
+.section h1 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h2 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h3 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h4 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h5 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.section h6 {
+  padding-top: 56px;
+  margin-top: -56px;
+}
+.dropdown-submenu {
+  position: relative;
+}
+.dropdown-submenu>.dropdown-menu {
+  top: 0;
+  left: 100%;
+  margin-top: -6px;
+  margin-left: -1px;
+  border-radius: 0 6px 6px 6px;
+}
+.dropdown-submenu:hover>.dropdown-menu {
+  display: block;
+}
+.dropdown-submenu>a:after {
+  display: block;
+  content: " ";
+  float: right;
+  width: 0;
+  height: 0;
+  border-color: transparent;
+  border-style: solid;
+  border-width: 5px 0 5px 5px;
+  border-left-color: #cccccc;
+  margin-top: 5px;
+  margin-right: -10px;
+}
+.dropdown-submenu:hover>a:after {
+  border-left-color: #ffffff;
+}
+.dropdown-submenu.pull-left {
+  float: none;
+}
+.dropdown-submenu.pull-left>.dropdown-menu {
+  left: -100%;
+  margin-left: 10px;
+  border-radius: 6px 0 6px 6px;
+}
+</style>
+
+<script>
+// manage active state of menu based on current page
+$(document).ready(function () {
+  // active menu anchor
+  href = window.location.pathname
+  href = href.substr(href.lastIndexOf('/') + 1)
+  if (href === "")
+    href = "index.html";
+  var menuAnchor = $('a[href="' + href + '"]');
+
+  // mark it active
+  menuAnchor.parent().addClass('active');
+
+  // if it's got a parent navbar menu mark it active as well
+  menuAnchor.closest('li.dropdown').addClass('active');
+});
+</script>
+
+<!-- tabsets -->
+
+<style type="text/css">
+.tabset-dropdown > .nav-tabs {
+  display: inline-table;
+  max-height: 500px;
+  min-height: 44px;
+  overflow-y: auto;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.tabset-dropdown > .nav-tabs > li.active:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li.active:before {
+  content: "&#xe258;";
+  border: none;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open:before {
+  content: "";
+  font-family: 'Glyphicons Halflings';
+  display: inline-block;
+  padding: 10px;
+  border-right: 1px solid #ddd;
+}
+
+.tabset-dropdown > .nav-tabs > li.active {
+  display: block;
+}
+
+.tabset-dropdown > .nav-tabs > li > a,
+.tabset-dropdown > .nav-tabs > li > a:focus,
+.tabset-dropdown > .nav-tabs > li > a:hover {
+  border: none;
+  display: inline-block;
+  border-radius: 4px;
+  background-color: transparent;
+}
+
+.tabset-dropdown > .nav-tabs.nav-tabs-open > li {
+  display: block;
+  float: none;
+}
+
+.tabset-dropdown > .nav-tabs > li {
+  display: none;
+}
+</style>
+
+<!-- code folding -->
+
+
+
+
+</head>
+
+<body>
+
+
+<div class="container-fluid main-container">
+
+
+
+
+<div class="navbar navbar-default  navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="index.html">「バイオインフォマティクスデータスキル」輪読会</a>
+    </div>
+    <div id="navbar" class="navbar-collapse collapse">
+      <ul class="nav navbar-nav">
+        <li>
+  <a href="index.html">Home</a>
+</li>
+<li>
+  <a href="chapter_08.html">Chapter 8</a>
+</li>
+      </ul>
+      <ul class="nav navbar-nav navbar-right">
+        
+      </ul>
+    </div><!--/.nav-collapse -->
+  </div><!--/.container -->
+</div><!--/.navbar -->
+
+<div class="fluid-row" id="header">
+
+
+
+<h1 class="title toc-ignore">チャプター８：R言語入門</h1>
+
+</div>
+
+
+<p>「バイオインフォマティクスデータスキル」が６年前に出版されてから、Rが色々と進んでいます。最近のおすすめと新しい情報をここでまとまりました。</p>
+<p>とても短く、簡単に紹介しますので、「これを使ってみたい！」と思った方は自分でさらにググったり、ヘルプを参照したりして、使って見てください。</p>
+<div id="tidyverse" class="section level2">
+<h2>tidyverse</h2>
+<p>「バイオインフォ」にはdplyr（p259）、ggplot2（p222）を紹介していますけど、この二つは<strong>tidyverse</strong>という、パッケージのまとまりに入っています。</p>
+<p>tidyverseの特徴</p>
+<ul>
+<li>それぞれ入っているパッケージは相性がいい</li>
+<li>ベースでもできることをもっと<strong>簡単、ロジカル</strong>にする</li>
+<li>コードが読みやすい、使いやすい</li>
+<li>弱点：特別な評価ルールを使っている（p221）ため、プログラミングには使いづらい</li>
+</ul>
+<p>以下、「バイオインフォマティクスデータスキル」に出ている例と比べて、おすすめのtidyverseによるコードを紹介します。（パイプみたいな、全く新しい情報の場合は適当に自分のコードで説明します）。</p>
+<pre class="r"><code># install.packages(&quot;tidyverse&quot;)
+library(tidyverse)</code></pre>
+</div>
+<div id="rのパイプ" class="section level2">
+<h2>Rのパイプ</h2>
+<p>「バイオインフォマティクスデータスキル」に書いていませんが、Rにもパイプ（<code>%&gt;%</code>）があります！ tidyverse群のmagrittrパケージに入っています。</p>
+<p>例えば、データから二つのコラムを選んで、名前を変えて、列の「a」が10以上の行だけに絞ります：</p>
+<p><strong>tidyverseバージョン</strong>（dplyr, p259 + パイプ）</p>
+<pre class="r"><code># 仮のデータを作る
+data &lt;- data.frame(
+  var1 = c(9, 11),
+  var2 = c(100, 200)
+)
+
+data %&gt;%
+  select(a = var1, b = var2) %&gt;%
+  filter(a &gt; 10)</code></pre>
+<pre><code>##    a   b
+## 1 11 200</code></pre>
+<p><strong>ベースRバージョン</strong></p>
+<pre class="r"><code>data2 &lt;- data[,c(&quot;var1&quot;, &quot;var2&quot;)]
+colnames(data2) &lt;- c(&quot;a&quot;, &quot;b&quot;)
+data2[data2$a &gt; 10,]</code></pre>
+<pre><code>##    a   b
+## 2 11 200</code></pre>
+</div>
+<div id="ファクターp205" class="section level2">
+<h2>ファクター（p205）</h2>
+<p>tidyverse群のforcats パケージがおすすめです。</p>
+<p>簡単にファクターのレベルをまとまったり、順番を変えたりすることができます。</p>
+<pre class="r"><code># p206
+chr_hits &lt;- c(&quot;chr2&quot;, &quot;chr2&quot;, &quot;chr3&quot;, &quot;chrX&quot;, &quot;chr2&quot;, &quot;chr3&quot;, &quot;chr3&quot;)
+
+hits &lt;- factor(chr_hits)
+
+# fct_*()は必ず因子を受けて・返すので、パイプに使いやすい
+fct_expand(chr_hits, c(&quot;chr4&quot;, &quot;chrY&quot;))</code></pre>
+<pre><code>## [1] chr2 chr2 chr3 chrX chr2 chr3 chr3
+## Levels: chr2 chr3 chrX chr4 chrY</code></pre>
+<pre class="r"><code># ベースR
+levels(hits) &lt;- list(chrX=&quot;chrX&quot;, chrY=&quot;chrY&quot;, chr2=&quot;chr2&quot;,
+chr3=&quot;chr3&quot;, chr4=&quot;chr4&quot;)
+
+hits</code></pre>
+<pre><code>## [1] chr2 chr2 chr3 chrX chr2 chr3 chr3
+## Levels: chrX chrY chr2 chr3 chr4</code></pre>
+</div>
+<div id="データの形を替えるp212" class="section level2">
+<h2>データの形を替える（p212）</h2>
+<p>reshape2は古いです。tidyverse群のtidyrがおすすめです。</p>
+<pre class="r"><code># 本にあるデータを再現する
+data &lt;- tibble(
+  gene = c(&quot;gene_1&quot;, &quot;gene_2&quot;),
+  meristem = c(582, 305),
+  root = c(91, 3505),
+  flower = c(495, 33)
+)
+
+data</code></pre>
+<pre><code>## # A tibble: 2 x 4
+##   gene   meristem  root flower
+##   &lt;chr&gt;     &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt;
+## 1 gene_1      582    91    495
+## 2 gene_2      305  3505     33</code></pre>
+<pre class="r"><code># pivot_longer()でデータを細長くする
+data_long &lt;- pivot_longer(
+  data,
+  names_to = &quot;tissue&quot;, values_to = &quot;expression&quot;,
+  c(meristem, root, flower)
+)
+
+data_long</code></pre>
+<pre><code>## # A tibble: 6 x 3
+##   gene   tissue   expression
+##   &lt;chr&gt;  &lt;chr&gt;         &lt;dbl&gt;
+## 1 gene_1 meristem        582
+## 2 gene_1 root             91
+## 3 gene_1 flower          495
+## 4 gene_2 meristem        305
+## 5 gene_2 root           3505
+## 6 gene_2 flower           33</code></pre>
+<pre class="r"><code># pivot_wider()でデータを幅広くする（戻す）
+pivot_wider(
+  data_long,
+  names_from = &quot;tissue&quot;,
+  values_from = expression)</code></pre>
+<pre><code>## # A tibble: 2 x 4
+##   gene   meristem  root flower
+##   &lt;chr&gt;     &lt;dbl&gt; &lt;dbl&gt;  &lt;dbl&gt;
+## 1 gene_1      582    91    495
+## 2 gene_2      305  3505     33</code></pre>
+</div>
+<div id="データをrに読み込ませるp214" class="section level2">
+<h2>データをRに読み込ませる（p214）</h2>
+<p><code>read.csv()</code>ではなく、tidyverse群のreadrパッケージに入っている<code>read_csv()</code>がおすすめです。</p>
+<ul>
+<li>文字はファクターではなく、キャラクターとして読み込まれます</li>
+<li>データtibble（ほぼdataframeと同じだけど、きれいにプリントアウトするし、行名がない）として読み込まれます</li>
+</ul>
+<pre class="r"><code>read_csv(&quot;Dataset_S1.txt&quot;)</code></pre>
+<pre><code>## 
+## ── Column specification ────────────────────────────────
+## cols(
+##   start = col_double(),
+##   end = col_double(),
+##   `total SNPs` = col_double(),
+##   `total Bases` = col_double(),
+##   depth = col_double(),
+##   `unique SNPs` = col_double(),
+##   dhSNPs = col_double(),
+##   `reference Bases` = col_double(),
+##   Theta = col_double(),
+##   Pi = col_double(),
+##   Heterozygosity = col_double(),
+##   `%GC` = col_double(),
+##   Recombination = col_double(),
+##   Divergence = col_double(),
+##   Constraint = col_double(),
+##   SNPs = col_double()
+## )</code></pre>
+<pre><code>## # A tibble: 59,140 x 16
+##    start   end `total SNPs` `total Bases` depth
+##    &lt;dbl&gt; &lt;dbl&gt;        &lt;dbl&gt;         &lt;dbl&gt; &lt;dbl&gt;
+##  1 55001 56000            0          1894  3.41
+##  2 56001 57000            5          6683  6.68
+##  3 57001 58000            1          9063  9.06
+##  4 58001 59000            7         10256 10.3 
+##  5 59001 60000            4          8057  8.06
+##  6 60001 61000            6          7051  7.05
+##  7 61001 62000            7          6950  6.95
+##  8 62001 63000            1          8834  8.83
+##  9 63001 64000            1          9629  9.63
+## 10 64001 65000            3          7999  8   
+## # … with 59,130 more rows, and 11 more variables:
+## #   `unique SNPs` &lt;dbl&gt;, dhSNPs &lt;dbl&gt;, `reference
+## #   Bases` &lt;dbl&gt;, Theta &lt;dbl&gt;, Pi &lt;dbl&gt;,
+## #   Heterozygosity &lt;dbl&gt;, `%GC` &lt;dbl&gt;,
+## #   Recombination &lt;dbl&gt;, Divergence &lt;dbl&gt;,
+## #   Constraint &lt;dbl&gt;, SNPs &lt;dbl&gt;</code></pre>
+</div>
+<div id="lapplyとsapply関数を使ってリストに関数を適用するp231" class="section level2">
+<h2>lapply()とsapply()関数を使って、リストに関数を適用する（p231）</h2>
+<p>lapplyではなく、tidyverse群のpurrrパッケージの<code>map()</code>がおすすめです。</p>
+<p><code>map()</code>はリストを返します。他に色々なバリエーションがあります：</p>
+<ul>
+<li><code>map_chr()</code>：キャラクター</li>
+<li><code>map_lgl()</code>：boolean（<code>TRUE</code>か<code>FALSE</code>）</li>
+<li><code>map_dbl()</code>：数字</li>
+<li><code>map_df()</code>：データフレーム</li>
+<li>などなど</li>
+</ul>
+<p><code>sapply()</code>は入力データの形によって返す結果の形が異なるので、使いづらいです。</p>
+<pre class="r"><code># p248: lapply
+ll &lt;- list(a=rnorm(6, mean=1), b=rnorm(6, mean=4), c=rnorm(6, mean=6))
+ll</code></pre>
+<pre><code>## $a
+## [1]  0.8833508  1.0096021 -0.1440581  2.0147508
+## [5] -1.0356442  1.5781123
+## 
+## $b
+## [1] 3.868375 4.064871 4.495219 2.611229 4.975130
+## [6] 5.217017
+## 
+## $c
+## [1] 5.296067 6.067610 5.809529 7.077418 6.239048
+## [6] 5.478907</code></pre>
+<pre class="r"><code># map_dbl（）が数字を返す
+map_dbl(ll, mean)</code></pre>
+<pre><code>##         a         b         c 
+## 0.7176856 4.2053069 5.9947632</code></pre>
+<pre class="r"><code># lapply()がリストを返す
+lapply(ll, mean)</code></pre>
+<pre><code>## $a
+## [1] 0.7176856
+## 
+## $b
+## [1] 4.205307
+## 
+## $c
+## [1] 5.994763</code></pre>
+<pre class="r"><code># p254: mapply() vs map2()
+ind_1 &lt;- list(loci_1=c(&quot;T&quot;, &quot;T&quot;), loci_2=c(&quot;T&quot;, &quot;G&quot;), loci_3=c(&quot;C&quot;, &quot;G&quot;))
+ind_2 &lt;- list(loci_1=c(&quot;A&quot;, &quot;A&quot;), loci_2=c(&quot;G&quot;, &quot;G&quot;), loci_3=c(&quot;C&quot;, &quot;G&quot;))
+
+# map2_dbl()は引数の順番はmap()と変わらない（関数が最後）
+map2_dbl(ind_1, ind_2, function(a, b) length(intersect(a, b)))</code></pre>
+<pre><code>## loci_1 loci_2 loci_3 
+##      0      1      2</code></pre>
+<pre class="r"><code># mapply()の引数の順番はlapply()と違う（関数が先）
+mapply(function(a, b) length(intersect(a,b)), ind_1, ind_2)</code></pre>
+<pre><code>## loci_1 loci_2 loci_3 
+##      0      1      2</code></pre>
+</div>
+<div id="データのマージと結合p234" class="section level2">
+<h2>データのマージと結合（p234）</h2>
+<p>本に出ているような<code>match()</code>の使い方はとても<em>おすすめできません</em>。分かりづらくて、間違いやすいです。</p>
+<p>ここはdplyrの<code>left_join()</code> がおすすめです。</p>
+<pre class="r"><code># データを読み込む
+mtfs &lt;- read_delim(&quot;motif_recombrates.txt&quot;, delim = &quot;\t&quot;)</code></pre>
+<pre><code>## 
+## ── Column specification ────────────────────────────────
+## cols(
+##   chr = col_character(),
+##   motif_start = col_double(),
+##   motif_end = col_double(),
+##   dist = col_double(),
+##   recomb_start = col_double(),
+##   recomb_end = col_double(),
+##   recom = col_double(),
+##   motif = col_character(),
+##   pos = col_character()
+## )</code></pre>
+<pre class="r"><code>mtfs</code></pre>
+<pre><code>## # A tibble: 20,050 x 9
+##    chr   motif_start motif_end   dist recomb_start
+##    &lt;chr&gt;       &lt;dbl&gt;     &lt;dbl&gt;  &lt;dbl&gt;        &lt;dbl&gt;
+##  1 chrX     35471312  35471325 39323      35430651
+##  2 chrX     35471312  35471325 36977      35433339
+##  3 chrX     35471312  35471325 34798.     35435343
+##  4 chrX     35471312  35471325 31850.     35437698
+##  5 chrX     35471312  35471325 27463      35441239
+##  6 chrX     35471312  35471325 24834      35446471
+##  7 chrX     35471312  35471325 21783      35446497
+##  8 chrX     35471312  35471325 18516.     35452573
+##  9 chrX     35471312  35471325 17440      35453030
+## 10 chrX     35471312  35471325 15814      35454726
+## # … with 20,040 more rows, and 4 more variables:
+## #   recomb_end &lt;dbl&gt;, recom &lt;dbl&gt;, motif &lt;chr&gt;,
+## #   pos &lt;chr&gt;</code></pre>
+<pre class="r"><code>rpts &lt;- read_delim(&quot;motif_repeats.txt&quot;, delim = &quot;\t&quot;)</code></pre>
+<pre><code>## 
+## ── Column specification ────────────────────────────────
+## cols(
+##   chr = col_character(),
+##   start = col_double(),
+##   end = col_double(),
+##   name = col_character(),
+##   motif_start = col_double()
+## )</code></pre>
+<pre class="r"><code>rpts</code></pre>
+<pre><code>## # A tibble: 317 x 5
+##    chr       start       end name  motif_start
+##    &lt;chr&gt;     &lt;dbl&gt;     &lt;dbl&gt; &lt;chr&gt;       &lt;dbl&gt;
+##  1 chrX   63005829  63006173 L2       63005830
+##  2 chrX   67746983  67747478 L2       67747232
+##  3 chrX  118646988 118647529 L2      118647199
+##  4 chrX  123998417 123998701 L2      123998675
+##  5 chr13  36171897  36172404 L2       36172069
+##  6 chr13  47030437  47031075 L2       47030836
+##  7 chr13 112828064 112828466 L2      112828268
+##  8 chr12  44799399  44799664 L2       44799602
+##  9 chr12  71407097  71407379 L2       71407292
+## 10 chr12 102646349 102646646 L2      102646586
+## # … with 307 more rows</code></pre>
+<pre class="r"><code># 左のデータ(mtfs)に右のデータ(rpts)をマージする
+left_join(
+  mtfs,
+  select(rpts, name, chr, motif_start),
+  by = c(&quot;chr&quot;, &quot;motif_start&quot;)
+)</code></pre>
+<pre><code>## # A tibble: 20,050 x 10
+##    chr   motif_start motif_end   dist recomb_start
+##    &lt;chr&gt;       &lt;dbl&gt;     &lt;dbl&gt;  &lt;dbl&gt;        &lt;dbl&gt;
+##  1 chrX     35471312  35471325 39323      35430651
+##  2 chrX     35471312  35471325 36977      35433339
+##  3 chrX     35471312  35471325 34798.     35435343
+##  4 chrX     35471312  35471325 31850.     35437698
+##  5 chrX     35471312  35471325 27463      35441239
+##  6 chrX     35471312  35471325 24834      35446471
+##  7 chrX     35471312  35471325 21783      35446497
+##  8 chrX     35471312  35471325 18516.     35452573
+##  9 chrX     35471312  35471325 17440      35453030
+## 10 chrX     35471312  35471325 15814      35454726
+## # … with 20,040 more rows, and 5 more variables:
+## #   recomb_end &lt;dbl&gt;, recom &lt;dbl&gt;, motif &lt;chr&gt;,
+## #   pos &lt;chr&gt;, name &lt;chr&gt;</code></pre>
+<p>他にも色々な<code>*_join()</code> があります。例えば、<code>inner_join()</code>は両方のデータに条件が一致した行だけを残します：</p>
+<pre class="r"><code>inner_join(
+  mtfs,
+  select(rpts, name, chr, motif_start),
+  by = c(&quot;chr&quot;, &quot;motif_start&quot;)
+)</code></pre>
+<pre><code>## # A tibble: 9,218 x 10
+##    chr   motif_start motif_end    dist recomb_start
+##    &lt;chr&gt;       &lt;dbl&gt;     &lt;dbl&gt;   &lt;dbl&gt;        &lt;dbl&gt;
+##  1 chrX     63005830  63005843  37772      62965644
+##  2 chrX     63005830  63005843  34673      62970484
+##  3 chrX     63005830  63005843  30084.     62971842
+##  4 chrX     63005830  63005843  21750.     62979661
+##  5 chrX     63005830  63005843  10682.     62988510
+##  6 chrX     63005830  63005843   2210.     63001799
+##  7 chrX     63005830  63005843   -384.     63005454
+##  8 chrX     63005830  63005843  -3530.     63006987
+##  9 chrX     63005830  63005843  -6024.     63011744
+## 10 chrX     63005830  63005843 -12691      63011975
+## # … with 9,208 more rows, and 5 more variables:
+## #   recomb_end &lt;dbl&gt;, recom &lt;dbl&gt;, motif &lt;chr&gt;,
+## #   pos &lt;chr&gt;, name &lt;chr&gt;</code></pre>
+</div>
+
+
+
+
+</div>
+
+<script>
+
+// add bootstrap table styles to pandoc tables
+function bootstrapStylePandocTables() {
+  $('tr.odd').parent('tbody').parent('table').addClass('table table-condensed');
+}
+$(document).ready(function () {
+  bootstrapStylePandocTables();
+});
+
+
+</script>
+
+<!-- tabsets -->
+
+<script>
+$(document).ready(function () {
+  window.buildTabsets("TOC");
+});
+
+$(document).ready(function () {
+  $('.tabset-dropdown > .nav-tabs > li').click(function () {
+    $(this).parent().toggleClass('nav-tabs-open')
+  });
+});
+</script>
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

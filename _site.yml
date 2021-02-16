@@ -1,0 +1,8 @@
+name: "yomu_bioinfo_basic"
+navbar:
+  title: "「バイオインフォマティクスデータスキル」輪読会"
+  left:
+    - text: "Home"
+      href: index.html
+    - text: "Chapter 8"
+      href: chapter_08.html

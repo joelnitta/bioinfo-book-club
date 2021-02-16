@@ -1,0 +1,193 @@
+---
+title: "チャプター８：R言語入門"
+output: html_document
+editor_options:
+  chunk_output_type: console
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+「バイオインフォマティクスデータスキル」が６年前に出版されてから、Rが色々と進んでいます。最近のおすすめと新しい情報をここでまとまりました。
+
+とても短く、簡単に紹介しますので、「これを使ってみたい！」と思った方は自分でさらにググったり、ヘルプを参照したりして、使って見てください。
+
+## tidyverse
+
+「バイオインフォ」にはdplyr（p259）、ggplot2（p222）を紹介していますけど、この二つは**tidyverse**という、パッケージのまとまりに入っています。
+
+tidyverseの特徴
+
+- それぞれ入っているパッケージは相性がいい
+- ベースでもできることをもっと**簡単、ロジカル**にする
+- コードが読みやすい、使いやすい
+- 弱点：特別な評価ルールを使っている（p221）ため、プログラミングには使いづらい
+
+以下、「バイオインフォマティクスデータスキル」に出ている例と比べて、おすすめのtidyverseによるコードを紹介します。（パイプみたいな、全く新しい情報の場合は適当に自分のコードで説明します）。
+
+```{r library, message = FALSE, warning = FALSE}
+# install.packages("tidyverse")
+library(tidyverse)
+```
+
+## Rのパイプ
+
+「バイオインフォマティクスデータスキル」に書いていませんが、Rにもパイプ（`%>%`）があります！ tidyverse群のmagrittrパケージに入っています。
+
+例えば、データから二つのコラムを選んで、名前を変えて、列の「a」が10以上の行だけに絞ります：
+
+**tidyverseバージョン**（dplyr, p259 + パイプ）
+```{r pipe1}
+# 仮のデータを作る
+data <- data.frame(
+  var1 = c(9, 11),
+  var2 = c(100, 200)
+)
+
+data %>%
+  select(a = var1, b = var2) %>%
+  filter(a > 10)
+```
+
+**ベースRバージョン**
+```{r pipe2}
+data2 <- data[,c("var1", "var2")]
+colnames(data2) <- c("a", "b")
+data2[data2$a > 10,]
+```
+
+## ファクター（p205）
+
+tidyverse群のforcats パケージがおすすめです。
+
+簡単にファクターのレベルをまとまったり、順番を変えたりすることができます。
+
+```{r forcats}
+# p206
+chr_hits <- c("chr2", "chr2", "chr3", "chrX", "chr2", "chr3", "chr3")
+
+hits <- factor(chr_hits)
+
+# fct_*()は必ず因子を受けて・返すので、パイプに使いやすい
+fct_expand(chr_hits, c("chr4", "chrY"))
+
+# ベースR
+levels(hits) <- list(chrX="chrX", chrY="chrY", chr2="chr2",
+chr3="chr3", chr4="chr4")
+
+hits
+```
+
+## データの形を替える（p212）
+
+reshape2は古いです。tidyverse群のtidyrがおすすめです。
+
+```{r tidyr}
+# 本にあるデータを再現する
+data <- tibble(
+  gene = c("gene_1", "gene_2"),
+  meristem = c(582, 305),
+  root = c(91, 3505),
+  flower = c(495, 33)
+)
+
+data
+
+# pivot_longer()でデータを細長くする
+data_long <- pivot_longer(
+  data,
+  names_to = "tissue", values_to = "expression",
+  c(meristem, root, flower)
+)
+
+data_long
+
+# pivot_wider()でデータを幅広くする（戻す）
+pivot_wider(
+  data_long,
+  names_from = "tissue",
+  values_from = expression)
+
+```
+
+## データをRに読み込ませる（p214）
+
+`read.csv()`ではなく、tidyverse群のreadrパッケージに入っている`read_csv()`がおすすめです。
+
+- 文字はファクターではなく、キャラクターとして読み込まれます
+- データtibble（ほぼdataframeと同じだけど、きれいにプリントアウトするし、行名がない）として読み込まれます
+
+```{r read-csv}
+read_csv("Dataset_S1.txt")
+```
+
+## lapply()とsapply()関数を使って、リストに関数を適用する（p231）
+
+lapplyではなく、tidyverse群のpurrrパッケージの`map()`がおすすめです。
+
+`map()`はリストを返します。他に色々なバリエーションがあります：
+
+- `map_chr()`：キャラクター
+- `map_lgl()`：boolean（`TRUE`か`FALSE`）
+- `map_dbl()`：数字
+- `map_df()`：データフレーム
+- などなど
+
+`sapply()`は入力データの形によって返す結果の形が異なるので、使いづらいです。
+
+```{r map}
+# p248: lapply
+ll <- list(a=rnorm(6, mean=1), b=rnorm(6, mean=4), c=rnorm(6, mean=6))
+ll
+
+# map_dbl（）が数字を返す
+map_dbl(ll, mean)
+
+# lapply()がリストを返す
+lapply(ll, mean)
+
+# p254: mapply() vs map2()
+ind_1 <- list(loci_1=c("T", "T"), loci_2=c("T", "G"), loci_3=c("C", "G"))
+ind_2 <- list(loci_1=c("A", "A"), loci_2=c("G", "G"), loci_3=c("C", "G"))
+
+# map2_dbl()は引数の順番はmap()と変わらない（関数が最後）
+map2_dbl(ind_1, ind_2, function(a, b) length(intersect(a, b)))
+
+# mapply()の引数の順番はlapply()と違う（関数が先）
+mapply(function(a, b) length(intersect(a,b)), ind_1, ind_2)
+```
+
+## データのマージと結合（p234）
+
+本に出ているような`match()`の使い方はとても*おすすめできません*。分かりづらくて、間違いやすいです。
+
+ここはdplyrの`left_join()` がおすすめです。
+
+```{r left-join}
+# データを読み込む
+mtfs <- read_delim("motif_recombrates.txt", delim = "\t")
+
+mtfs
+
+rpts <- read_delim("motif_repeats.txt", delim = "\t")
+
+rpts
+
+# 左のデータ(mtfs)に右のデータ(rpts)をマージする
+left_join(
+  mtfs,
+  select(rpts, name, chr, motif_start),
+  by = c("chr", "motif_start")
+)
+```
+
+他にも色々な`*_join()` があります。例えば、`inner_join()`は両方のデータに条件が一致した行だけを残します：
+
+```{r inner-join}
+inner_join(
+  mtfs,
+  select(rpts, name, chr, motif_start),
+  by = c("chr", "motif_start")
+)
+```
