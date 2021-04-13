@@ -7,3 +7,5 @@ navbar:
       href: index.html
     - text: "Chapter 8"
       href: chapter_08.html
+    - text: "Chapter 9"
+      href: chapter_09.html

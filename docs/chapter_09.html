@@ -11,7 +11,7 @@
 
 
 
-<title>「バイオインフォマティクスデータスキル」輪読会</title>
+<title>９章：範囲データの操作</title>
 
 <script src="site_libs/header-attrs-2.7/header-attrs.js"></script>
 <script src="site_libs/jquery-1.11.3/jquery.min.js"></script>
@@ -262,12 +262,21 @@ $(document).ready(function () {
 
 
 
-<h1 class="title toc-ignore">「バイオインフォマティクスデータスキル」輪読会</h1>
+<h1 class="title toc-ignore">９章：範囲データの操作</h1>
 
 </div>
 
 
-<p>「バイオインフォマティクスデータスキル」輪読会のメモをここでポストします</p>
+<div id="bioconductorパッケージのインストール" class="section level2">
+<h2>Bioconductorパッケージのインストール</h2>
+<p>Bioconductorパッケージのインストールには、本では<code>source("http://bioconductor.org/biocLite.R")</code>と書いてありますが、これは古い情報です。そして、Bioconductorの<a href="https://cran.r-project.org/web/packages/BiocManager/vignettes/BiocManager.html">サイトにも書いてあるように</a>、内容の分からないスクリプトをダウンロードして実行するのはセキュリティー的に問題があります。（“Sourcing an executable script from the web is an obvious security problem.”）</p>
+<p>今はBioconductorパッケージをインストールするパッケージ、<a href="https://cran.r-project.org/web/packages/BiocManager/vignettes/BiocManager.html"><code>BiocManager</code>があります</a>。</p>
+<p>使い方は以下のようです：</p>
+<pre class="r"><code>install.packages(&quot;BiocManager&quot;)
+BiocManager::install(c(&quot;GenomicRanges&quot;, &quot;Organism.dplyr&quot;))</code></pre>
+<p>ちなみに、もしrenvユーザーでしたら、renvでこのようにBioconductorのパケージのインストールが出来ます（パケージ名の前に<code>bioc::</code>をつける）：</p>
+<pre class="r"><code>renv::install(&quot;bioc::Biobase&quot;)</code></pre>
+</div>
 
 
 

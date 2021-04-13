@@ -1,0 +1,29 @@
+---
+title: "９章：範囲データの操作"
+output: html_document
+editor_options:
+  chunk_output_type: console
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Bioconductorパッケージのインストール
+
+Bioconductorパッケージのインストールには、本では`source("http://bioconductor.org/biocLite.R")`と書いてありますが、これは古い情報です。そして、Bioconductorの[サイトにも書いてあるように](https://cran.r-project.org/web/packages/BiocManager/vignettes/BiocManager.html)、内容の分からないスクリプトをダウンロードして実行するのはセキュリティー的に問題があります。（"Sourcing an executable script from the web is an obvious security problem."）
+
+今はBioconductorパッケージをインストールするパッケージ、[`BiocManager`があります](https://cran.r-project.org/web/packages/BiocManager/vignettes/BiocManager.html)。
+
+使い方は以下のようです：
+
+```{r biocmanager-example, eval=FALSE}
+install.packages("BiocManager")
+BiocManager::install(c("GenomicRanges", "Organism.dplyr"))
+```
+
+ちなみに、もしrenvユーザーでしたら、renvでこのようにBioconductorのパケージのインストールが出来ます（パケージ名の前に`bioc::`をつける）：
+
+```{r renv-bioc-example, eval=FALSE}
+renv::install("bioc::Biobase")
+```
